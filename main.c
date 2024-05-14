@@ -223,8 +223,6 @@ int main(){
         HWND hWnd = GetConsoleWindow();
         ShowWindow(hWnd, SW_HIDE);
     }
-
-
     
     int load_result = load("data.json", &json);
     if(load_result != 0){
