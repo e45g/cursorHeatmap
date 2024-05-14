@@ -8,9 +8,6 @@ libattopng - https://github.com/misc0110/libattopng
 ### Compile
 `gcc -static main.c -o cursorHeatmap.exe`
 
-### Run
-Simply open `cursorHeatmap.exe` and let it run in the background.
-
 ### Configuration
 After running `cursorHeatmap.exe` it will create a file named `data.json` in which config and data about mouse positions are saved.
 
