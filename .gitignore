@@ -1,3 +1,4 @@
 *.exe
 data.json
 *.png
+.gitignore
