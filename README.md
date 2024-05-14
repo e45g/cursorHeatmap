@@ -1,8 +1,8 @@
 # CursorHeatmap
 
 ## Useful links
-cJSON - https://github.com/DaveGamble/cJSON
-libattopng - https://github.com/misc0110/libattopng
+- cJSON - https://github.com/DaveGamble/cJSON
+- libattopng - https://github.com/misc0110/libattopng
 
 ## Usage
 ### Compile
