@@ -1,6 +1,3 @@
 *.exe
 data.json
-cJSON.c
-cJSON.h
-libattopng.c
-libattopng.h
+*.png

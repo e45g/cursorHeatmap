@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <windows.h>
 #include <pthread.h>
-#include "cJSON.c"
-#include "libattopng.c"
+#include "lib/cJSON.c"
+#include "lib/libattopng.c"
 #include <string.h>
 #include <unistd.h>
 #include <wchar.h>
