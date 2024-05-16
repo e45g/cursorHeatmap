@@ -164,7 +164,8 @@ int generateImage(cJSON *json){
         float current_val = getValue(json, key);
         char *x = strtok(key, "x");
         char *y = strtok(NULL, "x");
-        libattopng_set_pixel(png, atoi(x), atoi(y), RGBA(rgb_activity[0], rgb_activity[1], rgb_activity[2], (int)(current_val / (highest_val) *255)));
+        //libattopng_set_pixel(png, atoi(x), atoi(y), RGBA(rgb_activity[0], rgb_activity[1], rgb_activity[2], (int)(current_val / (highest_val) *255)));
+        libattopng_set_pixel(png, atoi(x), atoi(y), RGBA((int)(current_val/highest_val*rgb_activity[0]), (int)(current_val/highest_val*rgb_activity[1]), (int)(current_val / highest_val*rgb_activity[2]), 255));
     }
 
 
