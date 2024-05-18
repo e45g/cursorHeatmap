@@ -6,7 +6,7 @@
 
 ## Usage
 ### Compile
-`gcc -static main.c -o cursorHeatmap.exe`
+`make`
 
 ### Configuration
 After running `cursorHeatmap.exe` it will create a file named `data.json` in which config and data about mouse positions are saved.
