@@ -10,7 +10,7 @@
 
 #define RGBA(r, g, b, a) ((r) | ((g) << 8) | ((b) << 16) | ((a) << 24))
 #define MAX_RGBA_VALUE 255
-#define MAX_KEY_LENGTH 20
+#define MAX_KEY_LENGTH 32
 #define PNG_FILENAME "heatmap.png"
 #define DATA_FILENAME "data.json"
 

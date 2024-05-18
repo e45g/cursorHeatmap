@@ -1,6 +1,7 @@
 /*
 TODO:
-0) Refactor code to make it readible :) 80%
+-1) filter_positions - own thread? user command only?
+0) Refactor code to make it readable :) 80%
 1) Reset data option
 2) Open on startup option
 3) Start with arguments <nogui/...>
@@ -18,19 +19,19 @@ TODO:
 #include "../lib/libattopng.h"
 
 #include "../include/utils.h"
-#include "../include/config.h"
+#include "../include/json_ops.h"
 #include "../include/file_io.h"
 #include "../include/image.h"
 #include "../include/cursor_tracking.h"
 
-#define VERSION "0.1.13"
+#define VERSION "0.1.15"
 
 
 int main() {
     cJSON *json = cJSON_CreateObject();
     cJSON *config = cJSON_CreateObject();
     pthread_t threads[2];
-    char cmds[2][20] = {"Save", "Generate image"};
+    char cmds[4][20] = {"Save", "Generate image", "Filter data", "Reset data"};
     
     int load_result = load(DATA_FILENAME, &json);
     if (load_result != 0) {
@@ -63,25 +64,34 @@ int main() {
         system("cls");
 
         lock_json();
+        char *json_str = cJSON_Print(json);
         switch (u_input) {
             case 0:
-                char *json_str = cJSON_Print(json);
                 if (save(json_str) == 0) {
                     okay("Positions saved.\n");
                 }
-                free(json_str);
                 break;
 
             case 1:
-                if (generate_image(json) == 0) {
+                if (generate_image(json) == 0 && save(json_str) == 0) {
                     okay("Image generated.\n");
                 }
+                break;
+            
+            case 2:
+                info("WIP\n");
+                break;
+            
+            case 3:
+                long removed = filter_positions(json);
+                info("Filtered %ld position%s.\n", removed, removed>1 ? "s" : "");
                 break;
 
             default:
                 info("Choose number between %d and %d\n", 0, (int)(sizeof(cmds) / sizeof(cmds[0])));
                 break;
         }
+        cJSON_free(json_str);
         unlock_json();
     }
 

@@ -1,7 +1,7 @@
 # Compiler
 CC = gcc
 # Compiler flags
-CFLAGS = -Wall -Wextra -Iinclude -O3
+CFLAGS = -static -Wall -Wextra -Iinclude -O3
 # Source directory
 SRC_DIR = src
 LIB_DIR = lib

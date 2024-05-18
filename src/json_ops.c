@@ -1,4 +1,4 @@
-#include "../include/config.h"
+#include "../include/json_ops.h"
 #include "../include/utils.h"
 
 #include <string.h>
@@ -15,8 +15,7 @@ long get_highest_value(cJSON *json) {
     cJSON *current = NULL;
 
     cJSON_ArrayForEach(current, json) {
-        if (strcmp(current->string, "config") == 0)
-            continue;
+        if (strcmp(current->string, "config") == 0) continue;
         int value = current->valueint;
         if (value > highest)
             highest = value;
@@ -25,9 +24,39 @@ long get_highest_value(cJSON *json) {
     return highest;
 }
 
+long unsigned filter_positions(cJSON *json){
+    cJSON *config = get_config(json);
+    cJSON *current = NULL;
+    int treshold = get_value(config, "ignore_threshold");
+
+    long removed = 0;
+    long remove_count = 0;
+    long json_size = cJSON_GetArraySize(json);
+    char remove_list[json_size][MAX_KEY_LENGTH];
+
+    float highest_value = get_highest_value(json);
+    cJSON_ArrayForEach(current, json){
+        if(strcmp(current->string, "config") == 0) continue;
+        float value = current->valueint;
+        if((value/(highest_value/100)) < treshold) {
+            strncpy(remove_list[remove_count], current->string, MAX_KEY_LENGTH-1);
+            remove_list[remove_count][MAX_KEY_LENGTH - 1] = '\0';
+            remove_count++;
+        }
+    }
+
+    for(int i = 0; i < remove_count; i++){
+        cJSON_DeleteItemFromObject(json, remove_list[i]);
+        removed++;
+    }
+
+    return removed;
+}
+
 cJSON *generate_config(cJSON *json) {
     cJSON *config_json = cJSON_CreateObject();
 
+    cJSON_AddNumberToObject(config_json, "ignore_threshold", 10);
     cJSON_AddNumberToObject(config_json, "polling_rate", 1000);
     cJSON_AddNumberToObject(config_json, "debug", 0);
     cJSON_AddNumberToObject(config_json, "hidden", 0);

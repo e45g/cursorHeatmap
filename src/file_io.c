@@ -1,6 +1,6 @@
 #include "../include/file_io.h"
 #include "../include/utils.h"
-#include "../include/config.h"
+#include "../include/json_ops.h"
 #include "../include/image.h"
 
 #include <unistd.h>
@@ -102,9 +102,10 @@ void *save_and_generate_image(void *json) {
     int sleep = cJSON_GetObjectItemCaseSensitive(config, "save_interval")->valueint;
     while (1) {
         lock_json();
+        filter_positions(json);
         char *json_str = cJSON_Print(json);
         save(json_str);
-        free(json_str);
+        cJSON_free(json_str);
         generate_image(json);
         unlock_json();
         usleep(sleep * 60 * 1000 * 1000);

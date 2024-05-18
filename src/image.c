@@ -1,6 +1,6 @@
 #include "../include/image.h"
 #include "../include/utils.h"
-#include "../include/config.h"
+#include "../include/json_ops.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -23,7 +23,6 @@ void set_pixels_from_json(libattopng_t *png, cJSON *json, int *fg, float highest
         strcpy(key, current->string);
         key[sizeof(key) - 1] = '\0';
         float current_value = get_value(json, key);
-        if(current_value/highest_value < 0.05) continue;
         char *x = strtok(key, "x");
         char *y = strtok(NULL, "x");
         libattopng_set_pixel(png, atoi(x), atoi(y), RGBA(
