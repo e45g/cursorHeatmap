@@ -99,7 +99,7 @@ then using the CJSON_API_VISIBILITY flag to "export" the same symbols the way CJ
 #define cJSON_IsReference 256
 #define cJSON_StringIsConst 512
 
-/* The cJSON structure: */
+/* The cJSON structure: */  
 typedef struct cJSON
 {
     /* next/prev allow you to walk array/object chains. Alternatively, use GetArraySize/GetArrayItem/GetObjectItem */
