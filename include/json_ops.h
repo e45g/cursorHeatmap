@@ -6,7 +6,7 @@
 long get_highest_value(cJSON *json);
 int get_value(cJSON *json, char *key);
 long unsigned filter_positions(cJSON *json);
-cJSON *get_config(cJSON *json);
-cJSON *generate_config(cJSON *json);
+cJSON *get_config();
+cJSON *generate_config();
 
 #endif

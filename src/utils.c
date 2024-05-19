@@ -13,9 +13,10 @@ void unlock_json() {
 }
 
 long get_file_size(FILE *fp) {
-    fseek(fp, 0, SEEK_END);
+
+    fseek(fp, 0L, SEEK_END);
     long file_size = ftell(fp);
-    rewind(fp);
+    fseek(fp, 0L, SEEK_SET);
     return file_size;
 }
 

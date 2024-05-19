@@ -14,6 +14,12 @@
 #define PNG_FILENAME "heatmap.png"
 #define DATA_FILENAME "data.json"
 
+typedef struct {
+    int x;
+    int y;
+    float value;
+} PixelData;
+
 extern pthread_mutex_t json_mutex;
 
 void lock_json();

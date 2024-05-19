@@ -29,16 +29,14 @@ TODO:
 
 int main() {
     cJSON *json = cJSON_CreateObject();
-    cJSON *config = cJSON_CreateObject();
     pthread_t threads[2];
-    char cmds[4][20] = {"Save", "Generate image", "Filter data", "Reset data"};
+    char cmds[4][20] = {"Save", "Generate image", "Reset data", "Filter data"};
     
-    int load_result = load(DATA_FILENAME, &json);
-    if (load_result != 0) {
-        error("exiting - %d", load_result);
-        exit(1);
-    }
- 
+    load(DATA_FILENAME, &json);
+    cJSON *config = get_config();
+    cJSON_Delete(json);
+    json = cJSON_CreateObject();
+
     int hidden = get_value(config, "hidden");
     if (hidden) {
         HWND hWnd = GetConsoleWindow();
@@ -50,7 +48,7 @@ int main() {
     if (pthread_create(&threads[0], NULL, position_logic, json) != 0 || pthread_create(&threads[1], NULL, save_and_generate_image, json) != 0) {
         error("Error while trying to create a thread.");
         exit(1);
-    }
+    } 
 
     while (1) {
         for (int i = 0; i < (int)(sizeof(cmds) / sizeof(cmds[0])); i++) {
@@ -64,16 +62,15 @@ int main() {
         system("cls");
 
         lock_json();
-        char *json_str = cJSON_Print(json);
         switch (u_input) {
             case 0:
-                if (save(json_str) == 0) {
+                if (save(json) == 0) {
                     okay("Positions saved.\n");
                 }
                 break;
 
             case 1:
-                if (generate_image(json) == 0 && save(json_str) == 0) {
+                if (save(json) == 0 && generate_image() == 0) {
                     okay("Image generated.\n");
                 }
                 break;
@@ -88,10 +85,10 @@ int main() {
                 break;
 
             default:
-                info("Choose number between %d and %d\n", 0, (int)(sizeof(cmds) / sizeof(cmds[0])));
+                info("Choose a number between %d and %d\n", 0, (int)(sizeof(cmds) / sizeof(cmds[0])));
                 break;
         }
-        cJSON_free(json_str);
+        info("Size of json: %d", cJSON_GetArraySize(json));
         unlock_json();
     }
 
@@ -99,5 +96,6 @@ int main() {
     pthread_join(threads[1], NULL);
 
     cJSON_Delete(json);
+    cJSON_Delete(config);
     return 0;
 }
